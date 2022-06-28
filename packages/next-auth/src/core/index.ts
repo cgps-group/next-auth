@@ -21,6 +21,7 @@ export interface RequestInternal {
   action: NextAuthAction
   providerId?: string
   error?: string
+  socket?: Object
 }
 
 export interface NextAuthHeader {
@@ -244,6 +245,7 @@ export async function NextAuthHandler<
             query: req.query,
             headers: req.headers,
             cookies: req.cookies,
+            req,
             method,
             options,
             sessionStore,

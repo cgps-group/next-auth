@@ -16,6 +16,7 @@ export default async function callback(params: {
   headers: RequestInternal["headers"]
   cookies: RequestInternal["cookies"]
   sessionStore: SessionStore
+  req?: RequestInternal
 }): Promise<OutgoingResponse> {
   const { options, query, body, method, headers, sessionStore } = params
   const {
@@ -159,7 +160,7 @@ export default async function callback(params: {
         }
 
         // @ts-expect-error
-        await events.signIn?.({ user, account, profile, isNewUser })
+        await events.signIn?.({ user, account, profile, isNewUser, req: params.req })
 
         // Handle first logins on new accounts
         // e.g. option to send users to a new account landing page on initial login
@@ -303,7 +304,7 @@ export default async function callback(params: {
       }
 
       // @ts-expect-error
-      await events.signIn?.({ user, account, isNewUser })
+      await events.signIn?.({ user, account, isNewUser, req: params.req })
 
       // Handle first logins on new accounts
       // e.g. option to send users to a new account landing page on initial login
@@ -418,7 +419,7 @@ export default async function callback(params: {
     cookies.push(...sessionCookies)
 
     // @ts-expect-error
-    await events.signIn?.({ user, account })
+    await events.signIn?.({ user, account, req: params.req })
 
     return { redirect: callbackUrl, cookies }
   }
